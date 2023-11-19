@@ -304,7 +304,10 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
             AdvertiseData advertisementData = getAdvertisementData(serviceUUID);
             AdvertiseSettings advertiseSettings = getAdvertiseSettings();
 
-            bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertisementData, advertiseCallback);
+            AdvertiseData.Builder respBuilder = new AdvertiseData.Builder();
+            respBuilder.setIncludeDeviceName(true);
+            
+            bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertisementData, respBuilder.build(), advertiseCallback);
 
             advertisingStartedCallback = callbackContext;
 
@@ -547,7 +550,7 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
         builder.setIncludeTxPowerLevel(false); // reserve advertising space for URI
 
         builder.addServiceUuid(new ParcelUuid(serviceUuid)); // TODO accept multiple services in the future
-        builder.setIncludeDeviceName(true);
+//        builder.setIncludeDeviceName(true);
         return builder.build();
     }
 
