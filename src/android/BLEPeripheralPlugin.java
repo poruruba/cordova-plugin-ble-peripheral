@@ -306,7 +306,8 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
 
             AdvertiseData.Builder respBuilder = new AdvertiseData.Builder();
             respBuilder.setIncludeDeviceName(true);
-            
+
+            bluetoothLeAdvertiser.stopAdvertising(advertiseCallback);
             bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertisementData, respBuilder.build(), advertiseCallback);
 
             advertisingStartedCallback = callbackContext;
