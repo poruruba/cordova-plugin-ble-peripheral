@@ -453,8 +453,7 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
             super.onCharacteristicReadRequest(device, requestId, offset, characteristic);
             Log.d(TAG, "onCharacteristicReadRequest requestId=" + requestId + " offset=" + offset);
 
-            byte[] original = characteristic.getValue();
-            gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, Arrays.copyOfRange(original, offset, original.length));
+            gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, characteristic.getValue());
         }
 
         @Override
