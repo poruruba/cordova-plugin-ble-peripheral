@@ -467,6 +467,7 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
                     JSONObject message = new JSONObject();
                     message.put("service", characteristic.getService().getUuid().toString());
                     message.put("characteristic", characteristic.getUuid().toString());
+                    message.put("offset", offset);
                     message.put("value", byteArrayToJSON(value));
 
                     PluginResult result = new PluginResult(PluginResult.Status.OK, message);
