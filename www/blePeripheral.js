@@ -57,8 +57,6 @@ var onBluetoothStateChangeCallback;
 function registerWriteRequestCallback() {
 
     var didReceiveWriteRequest = function(json) {
-      console.log('didReceiveWriteRequest');
-      console.log(json);
       convertToNativeJS(json);
 
       if (onWriteRequestCallback && typeof onWriteRequestCallback === 'function') {
