@@ -152,7 +152,16 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
             gattServer = bluetoothManager.openGattServer(cordova.getContext(), gattServerCallback);
 
         }
-
+        if( gattServer == null ){
+            BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+            if (bluetoothManager == null) {
+                LOG.e(TAG, "bluetoothManager is null");
+                callbackContext.error("Unable to get the Bluetooth Manager");
+                return false;
+            }
+            gattServer = bluetoothManager.openGattServer(cordova.getContext(), gattServerCallback);
+        }
+        
         boolean validAction = true;
 
         if (action.equals(SET_CHARACTERISTIC_VALUE_CHANGED_LISTENER)) {
