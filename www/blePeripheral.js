@@ -133,6 +133,12 @@ module.exports = {
         WRITE_ENCRYPTION_REQUIRED: cordova.platformId === 'ios' ? 0x08: 0x20
     },
 
+    resetServer: function(){
+        return new Promise(function(resolve, reject) {
+             cordova.exec(resolve, reject, 'BLEPeripheral', 'resetServer', []);
+        });
+    },
+
     createService: function(uuid) {
 
         return new Promise(function(resolve, reject) {
@@ -168,6 +174,14 @@ module.exports = {
 
         return new Promise(function(resolve, reject) {
             cordova.exec(resolve, reject, 'BLEPeripheral', 'publishService', [uuid]);
+        });
+
+    },
+
+    stopAdvertising: function() {
+
+        return new Promise(function(resolve, reject) {
+            cordova.exec(resolve, reject, 'BLEPeripheral', 'stopAdvertising', []);
         });
 
     },
