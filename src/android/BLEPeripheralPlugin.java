@@ -64,7 +64,9 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
     private static final String ADD_CHARACTERISTIC = "addCharacteristic";
     private static final String PUBLISH_SERVICE = "publishService";
     private static final String START_ADVERTISING = "startAdvertising";
+    private static final String END_ADVERTISING = "endAdvertising";
     private static final String SET_CHARACTERISTIC_VALUE = "setCharacteristicValue";
+    private static final String RESET_SERVER = "resetServer";
 
     private static final String SET_CHARACTERISTIC_VALUE_CHANGED_LISTENER = "setCharacteristicValueChangedListener";
 
@@ -121,6 +123,18 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
     public boolean execute(String action, CordovaArgs args, CallbackContext callbackContext) throws JSONException {
         LOG.d(TAG, "action = " + action);
 
+        if (action.equals(RESET_SERVER)){
+            if( gattServer != null ){
+                BluetoothLeAdvertiser bluetoothLeAdvertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
+                bluetoothLeAdvertiser.stopAdvertising(advertiseCallback);
+                gattServer.close();
+                gattServer = null;
+                services.clear();
+            }
+            callbackContext.success();
+            return true;
+        }
+
         if (bluetoothAdapter == null) {
             Activity activity = cordova.getActivity();
             boolean hardwareSupportsBLE = activity.getApplicationContext()
@@ -161,7 +175,7 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
             }
             gattServer = bluetoothManager.openGattServer(cordova.getContext(), gattServerCallback);
         }
-        
+
         boolean validAction = true;
 
         if (action.equals(SET_CHARACTERISTIC_VALUE_CHANGED_LISTENER)) {
@@ -320,6 +334,13 @@ public class BLEPeripheralPlugin extends CordovaPlugin {
             bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertisementData, respBuilder.build(), advertiseCallback);
 
             advertisingStartedCallback = callbackContext;
+
+        } else if (action.equals(END_ADVERTISING)) {
+
+            BluetoothLeAdvertiser bluetoothLeAdvertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
+            bluetoothLeAdvertiser.stopAdvertising(advertiseCallback);
+
+            callbackContext.success();
 
         } else if (action.equals(SET_CHARACTERISTIC_VALUE)) {
 
